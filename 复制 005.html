@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>three.js webgl - loaders - MMD loader</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #fff;
+				color: #000;
+				margin: 0px;
+				overflow: hidden;
+			}
+			
+			#info {
+				color: #000;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				display: block;
+			}
+			
+			#info a,
+			.button {
+				color: #f00;
+				font-weight: bold;
+				text-decoration: underline;
+				cursor: pointer
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<script src="js/three.js"></script>
+		<script src="js/FBXLoader.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="js/stats.min.js"></script>-->
+
+		<script>
+			var container, stats;
+
+			var mesh, camera, scene, renderer, effect;
+			var helper, ikHelper, physicsHelper;
+
+			var mouseX = 0,
+				mouseY = 0;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+
+			var clock = new THREE.Clock();
+
+			init();
+			animate();
+
+			function init() {
+
+				container = document.createElement('div');
+				document.body.appendChild(container);
+
+				camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+				camera.position.z = 30;
+
+				// scene
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color(0x00ffff);
+
+				var gridHelper = new THREE.PolarGridHelper(30, 10);
+				gridHelper.position.y = -10;
+				scene.add(gridHelper);
+
+				//				var ambient = new THREE.AmbientLight(0x666666);
+				//				scene.add(ambient);
+
+				//				var directionalLight = new THREE.DirectionalLight(0x887766);
+				//				directionalLight.position.set(-1, 1, 1).normalize();
+				//				scene.add(directionalLight);
+
+				//
+
+				renderer = new THREE.WebGLRenderer({
+					antialias: true
+				});
+				renderer.setPixelRatio(window.devicePixelRatio);
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				container.appendChild(renderer.domElement);
+
+				// STATS
+				
+				var loader = new THREE.FBXLoader();
+				loader.load( 'obj/kj.fbx', function( object ) {
+
+					object.mixer = new THREE.AnimationMixer( object );
+					mixers.push( object.mixer );
+
+					var action = object.mixer.clipAction( object.animations[ 0 ] );
+					action.play();
+
+					scene.add( object );
+
+
+				});
+				// model
+
+			}
+			//
+
+			function animate() {
+				requestAnimationFrame(animate);
+				render();
+			}
+
+			function render() {
+				renderer.render(scene, camera);
+			}
+		</script>
+
+	</body>
+
+</html>

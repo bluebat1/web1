@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title></title>
+		<h1 style="position: absolute;left: 50%;">连动操作</h1>
+		<style>
+		body{
+			background-color: midnightblue;
+		}
+		*{
+		margin: 0px;padding: 0px;	
+		}
+			canvas {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				/*-webkit-transform: rotateY(40deg)rotateX(40deg);*/
+			}
+		</style>
+	</head>
+<img src="img/zhou.png"style="position: fixed;bottom: 0px;z-index: 999;height: 20vh;width: 20vh;"/>
+	<body>
+		<div id="canvas-frame"></div>
+		<canvas id="yaogan" width="200px" height="200px" style="z-index: 9999;"></canvas>
+	</body>
+
+</html>
+<script src="js/stats.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/three_new.js"></script>
+<script src="js2/loaders/MTLLoader.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/OBJLoader.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/CanvasRenderer.js" type="text/javascript" charset="utf-8"></script>
+	<!--最后引用min.js-->
+<script type="text/javascript">
+	window.onload = function() {
+
+	//FPS监视器
+	var stats = new Stats();
+	stats.setMode(1); // 0: fps, 1: ms
+	stats.domElement.style.position = 'absolute';
+	// 将stats的界面对应左上角
+	stats.domElement.style.left = '0px';
+	stats.domElement.style.top = '0px';
+	document.getElementById('canvas-frame').appendChild(stats.domElement);
+	setInterval(function() {
+		stats.begin();
+		// 你的每一帧的代码
+		stats.end();
+	}, 1000 / 60);
+	//========
+	// 创建一个具有红色背景的渲染器
+	var renderer;
+	function webglAvailable() {
+		try {
+			var canvas = document.createElement( 'canvas' );
+			return !!( window.WebGLRenderingContext && (
+				canvas.getContext( 'webgl' ) ||
+				canvas.getContext( 'experimental-webgl' ) )
+			);
+		} catch ( e ) {
+			return false;
+		}
+	}
+	if ( webglAvailable() ) {
+		renderer = new THREE.WebGLRenderer({alpha:true});
+	} else {
+		renderer = new THREE.CanvasRenderer();
+	}
+	renderer.setClearColor(0xf0f,0.0);
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	//=======================================||
+	//||=====================================||
+	document.body.appendChild(renderer.domElement);
+	var scene = new THREE.Scene();
+	var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
+
+	var geometry = new THREE.CubeGeometry(111, 111, 111);
+	var material = new THREE.MeshBasicMaterial({
+		color: 0xffaadd
+	});
+		var cube = new THREE.Mesh(geometry, material);
+		cube.position.z=-11;
+		var cube1 = new THREE.Mesh(geometry, material);
+		cube1.position.y=211;
+		cube.add(cube1);
+		scene.add(cube);
+	//==========
+	//光
+//	环境光
+	var light = new THREE.AmbientLight( 0xdcdcdc,0.1 ); // soft white light
+	scene.add( light );
+//	平行光
+	var directionalLight = new THREE.DirectionalLight( 0xfab, 1.5);
+	directionalLight.position.set( 111, 111, 101 );
+	scene.add( directionalLight );
+	//===============
+	//相机
+	camera.position.z = 888;
+	camera.position.y = 444;
+	camera.rotation.x = -0.51;
+	//===================================================
+	function render() {
+		cube.rotation.x+=0.01;
+		cube1.rotation.y+=0.01;
+		document.onkeydown = function(keyd) {
+		//up
+		if (keyd.keyCode == 38 || keyd.keyCode == 87) {
+			
+			
+		} //down
+		if (keyd.keyCode == 40 || keyd.keyCode == 83) {
+			
+			
+		} //left
+		if (keyd.keyCode == 37 || keyd.keyCode == 65) {
+			camera.position.x-=10;
+			
+		} //right
+		if (keyd.keyCode == 39 || keyd.keyCode == 68) {
+			camera.position.x+=10;
+			
+		}
+	}
+		renderer.render(scene, camera);
+		requestAnimationFrame(render);
+	}
+	render();
+}
+</script>

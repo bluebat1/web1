@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<iframe src="index.html" width="666" height="555"></iframe>
+		<br>
+		<input type="button" id="1" value="1" />
+		<input type="button" id="2" value="2" />
+		<input type="button" id="3" value="3" />
+		<input type="button" id="4" value="4" />
+		<input type="button" id="5" value="5" />
+		<input type="button" id="6" value="6" />
+		<input type="button" id="7" value="7" />
+		<input type="button" id="8" value="8" />
+		<input type="button" id="9" value="9" />
+	</body>
+	<script type="text/javascript">
+		var a=document.getElementsByTagName('input');
+		var ifem=document.getElementsByTagName('iframe')[0];
+		a[0].onclick=function () {
+			ifem.src='index.html';
+		}
+		a[1].onclick=function () {
+			ifem.src='fresh.html';
+		}
+		a[2].onclick=function () {
+			ifem.src='new_file.html';
+		}
+		a[3].onclick=function () {
+			ifem.src='MianPian.html';
+		}
+		a[4].onclick=function () {
+			ifem.src='index.html';
+		}
+	</script>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title></title>
+		<style>
+			body {
+				background-color: midnightblue;
+			}
+			
+			* {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			canvas {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				/*-webkit-transform: rotateY(40deg)rotateX(40deg);*/
+			}
+		</style>
+		<script src="js/three_new.js"></script>
+	</head>
+
+	<body>
+		<script type="text/javascript">
+			// 创建一个具有红色背景的渲染器
+			var renderer;
+
+			function webglAvailable() {
+				try {
+					var canvas = document.createElement('canvas');
+					return !!(window.WebGLRenderingContext && (
+						canvas.getContext('webgl') ||
+						canvas.getContext('experimental-webgl')));
+				} catch (e) {
+					return false;
+				}
+			}
+			if (webglAvailable()) {
+				renderer = new THREE.WebGLRenderer({
+					alpha: true
+				});
+			} else {
+				renderer = new THREE.CanvasRenderer();
+			}
+			renderer.setClearColor(0xf0f, 0.0);
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			//	renderer.getContext('webgl');
+			document.body.appendChild(renderer.domElement);
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
+			var geometry = new THREE.CubeGeometry(11, 11, 11);
+			var material = new THREE.MeshBasicMaterial({
+				color: 'rgba(111,111,222,0.1)'
+			});
+			var cube = new THREE.Mesh(geometry, material);
+			cube.position.z = -111;
+			var cube2 = new THREE.Mesh(geometry, material);
+			cube2.position.x = -20;
+			var cube3 = new THREE.Mesh(geometry, material);
+			cube3.position.y = -20;
+			var cube4 = new THREE.Mesh(geometry, material);
+			cube4.position.z = -20;
+			var cube5 = new THREE.Mesh(geometry, material);
+			cube5.position.x = +20;
+			var cube6 = new THREE.Mesh(geometry, material);
+			cube6.position.y = +20;
+			var cube7 = new THREE.Mesh(geometry, material);
+			cube7.position.z = +20;
+			wireframe = new THREE.WireframeHelper(cube, 'red');
+			cube.add(cube2);
+			cube.add(cube3);
+			cube.add(cube4);
+			cube.add(cube5);
+			cube.add(cube6);
+			cube.add(cube7);
+			cube.add(wireframe);
+			scene.add(cube);
+			//;;;;;;;;;;;;;;;;;;;;;;;;
+//			var geometry = new THREE.SphereGeometry(12, 22, 22);
+			var material = new THREE.MeshBasicMaterial({color:'blue'});
+//				lo = new THREE.TextureLoader();
+//			material.map = lo.load('img/worldMap_sea_1.png');
+//			var sphere = new THREE.Mesh(geometry, material);
+//			sphere.position.z=27;
+			cube.add(sphere);
+			for (i=0;i<33;i++) {
+				var geometry = new THREE.SphereGeometry(1, 22, 22);
+				var sphere = new THREE.Mesh(geometry, material);
+				sphere.position.z=Math.random()*115;
+				sphere.position.x=Math.random()*115;
+				sphere.position.y=Math.random()*115;
+				cube.add(sphere);
+			}
+			for (i=0;i<33;i++) {
+				var geometry = new THREE.SphereGeometry(1, 22, 22);
+				var sphere = new THREE.Mesh(geometry, material);
+				sphere.position.z=Math.random()*-115;
+				sphere.position.x=Math.random()*-115;
+				sphere.position.y=Math.random()*-115;
+				cube.add(sphere);
+			}
+			for (i=0;i<33;i++) {
+				var geometry = new THREE.SphereGeometry(1, 22, 22);
+				var sphere = new THREE.Mesh(geometry, material);
+				sphere.position.z=Math.random()*115;
+				sphere.position.x=Math.random()*-115;
+				sphere.position.y=Math.random()*-115;
+				cube.add(sphere);
+			}
+			for (i=0;i<33;i++) {
+				var geometry = new THREE.SphereGeometry(1, 22, 22);
+				var sphere = new THREE.Mesh(geometry, material);
+				sphere.position.z=Math.random()*-115;
+				sphere.position.x=Math.random()*-115;
+				sphere.position.y=Math.random()*115;
+				cube.add(sphere);
+			}
+			//==========
+			//光
+			//	环境光
+			var light = new THREE.AmbientLight(0xdcdcdc, 0.1); // soft white light
+			scene.add(light);
+			//	平行光
+			var directionalLight = new THREE.DirectionalLight(0xEEE8AA, 1);
+			directionalLight.position.set(111, 111, 101);
+			scene.add(directionalLight);
+			//调整相机
+			camera.position.z += 80;
+
+			function render() {
+				sphere.rotation.y += 0.1;
+				sphere.rotation.x += 0.1;
+				sphere.rotation.z += 0.1;
+				cube2.rotation.x += 0.1;
+				cube3.rotation.y += 0.1;
+				cube4.rotation.z += 0.1;
+				cube.rotation.x += 0.01;
+				cube.rotation.y += 0.01;
+				cube.rotation.z += 0.01;
+				renderer.render(scene, camera);
+				requestAnimationFrame(render);
+			}
+			render();
+		</script>
+	</body>
+
+</html>

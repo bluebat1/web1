@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0px;padding: 0px;
+			}
+			canvas{
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript" src="js/three.min.js" ></script>
+	<script src="js/lk-class.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	// 创建一个具有红色背景的渲染器
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setClearColor(0x0f0000);
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.getContext('webgl');
+			document.body.appendChild(renderer.domElement);
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+			var geometry = new THREE.CubeGeometry(111, 111, 111);
+			var material = new THREE.MeshBasicMaterial({color:'red',opacity:0});
+			lo = new THREE.TextureLoader();
+			material.map = lo.load('img/03.jpg');
+			spot = new THREE.Mesh(geometry, material);
+			scene.add(spot);
+			spot.scale.set(1,1,1);
+//			spot.rotation.x=-45;
+//			spot.rotation.y=-45;
+			spot.name = 'apot1';
+			spot.opacity=0.01;
+			camera.position.z=200;
+			//	环境光
+			var light = new THREE.AmbientLight(0xdcdcdc, 0.8); // soft white light
+			scene.add(light);
+			function oo() {
+				renderer.render(scene, camera);
+//				spot.rotation.x-=0.005;
+				spot.rotation.y-=0.05;
+				requestAnimationFrame(oo);
+			}
+			oo();
+	</script>
+</html>

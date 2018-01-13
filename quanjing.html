@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<script src="js/three_new.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/ImageUtils.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
+		*{margin: 0px;padding: 0px;}
+	</style>
+
+	<body style="align-content: center;">
+		<script type="text/javascript">
+			var renderer;
+
+			function webglAvailable() {
+				try {
+					var canvas = document.createElement('canvas');
+					return !!(window.WebGLRenderingContext && (
+						canvas.getContext('webgl') ||
+						canvas.getContext('experimental-webgl')));
+				} catch (e) {
+					return false;
+				}
+			}
+			if (webglAvailable()) {
+				renderer = new THREE.WebGLRenderer({
+					alpha: true
+				});
+			} else {
+				renderer = new THREE.CanvasRenderer();
+			}
+			renderer.setClearColor(0xf0f, 0.51);
+			renderer.setSize(window.innerWidth * 0.9, window.innerHeight * 0.9);
+			document.body.appendChild(renderer.domElement);
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
+			camera.position.z=500;
+			scene.add(camera);
+			//	环境光
+			var light = new THREE.AmbientLight(0xdcdcdc, 0.1); // soft white light
+			scene.add(light);
+			//	平行光
+			var directionalLight = new THREE.DirectionalLight(0xEEE8AA, 1);
+			directionalLight.position.set(111, 111, 101);
+			scene.add(directionalLight);
+			//点光
+			var light = new THREE.PointLight('red', 1,0);
+			light.position.x=-110;
+			light.position.y=-110;
+			light.position.z=-0;
+			scene.add(light);
+			urls=['img/actor4.png'];
+//			var mass=new THREE.ImageUtils.loadTextureCube(urls);
+//			mass.format=THREE.RGBAFormat;
+	var points = [];
+for ( var i = 0; i < 10; i ++ ) {
+	points.push( new THREE.Vector2( Math.sin( i * 0.2 ) * 10 + 5, ( i - 5 ) * 2 ) );
+}
+var geometry = new THREE.LatheGeometry( points );
+var material = new THREE.MeshBasicMaterial();
+			lo = new THREE.TextureLoader();
+			material.map = lo.load('img/actor4.png');
+var lathe = new THREE.Mesh( geometry, material );
+scene.add( lathe );
+			document.onkeydown = function(keyd) {
+		//up
+		if (keyd.keyCode == 38 || keyd.keyCode == 87) {
+			camera.position.z-=10;
+		} //down
+		if (keyd.keyCode == 40 || keyd.keyCode == 83) {
+			camera.position.z+=10;
+		} //left
+		if (keyd.keyCode == 37 || keyd.keyCode == 65) {
+			camera.rotation.y-=0.21;
+		} //right
+		if (keyd.keyCode == 39 || keyd.keyCode == 68) {
+			
+			camera.rotation.y+=0.21;
+		}
+	}
+			function render() {
+				lathe.rotation.x+=Math.PI/20;
+				renderer.render(scene, camera);
+				requestAnimationFrame(render);
+			}
+			render();
+		</script>
+	</body>
+
+</html>

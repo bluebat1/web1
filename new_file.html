@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<script type="text/javascript" src="js/three.min.js"></script>
+		<script type="text/javascript" src="js/OBJLoader.js"></script>
+		<script type="text/javascript">
+			var scene = null;
+			var camera = null;
+			var renderer = null;
+			var mesh = null;
+			var id = null;
+
+			function init() {
+				renderer = new THREE.WebGLRenderer({ //渲染器
+					canvas: document.getElementById('mainCanvas')
+						//画布
+				});
+				renderer.setClearColor(0x000000);
+				//画布颜色
+				scene = new THREE.Scene(); //创建场景
+				var camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
+				camera.position.set(10, 135, 255); //相机位置
+				camera.lookAt(new THREE.Vector3(0, 2, 0)); //lookAt()设置相机所看的位置 
+				scene.add(camera); //把相机添加到场景中
+				var loader = new THREE.OBJLoader(); //在init函数中，创建loader变量，用于导入模型 
+				loader.load('./src/untitled.obj', function(obj) {
+					//第一个表示模型路径，第二个表示完成导入后的回调函数，一般我们需要在这个回调函数中将导入的模型添加到场景中
+					obj.traverse(function(child) {
+						if (child instanceof THREE.Mesh) {
+							child.material.side = THREE.DoubleSide;
+						}
+					});
+					var mesh = obj; //储存到全局变量中
+//					mesh.position.y=-5;
+					scene.add(obj);
+					//将导入的模型添加到场景中
+				});
+				var light = new THREE.AmbientLight( 0xdcdcdc,0.3 ); // soft white light
+					scene.add( light );
+					//	平行光
+	var directionalLight = new THREE.DirectionalLight( 0xababab, 1.5);
+	directionalLight.position.set( 111, 111, 101 );
+	scene.add( directionalLight );
+			function draw() { //们在重绘函数中让茶壶旋转：
+				requestAnimationFrame(draw);
+				renderer.render(scene, camera); //调用WebGLRenderer的render函数刷新场景
+//				mesh.rotation.y += 0.01; //添加动画
+//				if (mesh.rotation.y > Math.PI * 2) {
+//					mesh.rotation.y -= Math.PI * 2;
+//				}
+			}
+			draw()
+			}
+
+		</script>
+	</head>
+
+	<body onload="init()">
+		<canvas id="mainCanvas" width="800px" height="600px"></canvas>
+	</body>
+
+</html>
